@@ -5,6 +5,7 @@
       <module name="demo-server" target="15" />
       <module name="demo-server.main" target="15" />
       <module name="demo-server.test" target="15" />
+      <module name="server.demo-server.test" target="15" />
     </bytecodeTargetLevel>
   </component>
 </project>

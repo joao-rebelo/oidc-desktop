@@ -1,6 +1,8 @@
 # OIDC Desktop
 
-This is a runnable example of how to achieve Desktop Spring OIDC support.
+This is a runnable example of how to achieve Desktop Spring OIDC support. 
+A full description of its internal can be found in my article: https://www.linkedin.com/pulse/oidc-desktop-jo%25C3%25A3o-rebelo
+
 The tokens are retrieved with an OIDC Authentication Code Flow, and the response is then provided to the AuthenticationProviderImpl class
 
 We've created / cloned a new OAuth2LoginAuthenticationToken which doesn't require the exchange object, and on AuthenticationProviderImpl we use the same Nimbus code that is used internally on Spring to parse the OIDC responses / tokens.
