@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: Client example
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            authorization-grant-type: "refresh_token"
+            client-id: "exampleClient"
+            client-name: "Keycloak"
+            client-authentication-method: "post"
+            scope: "openid"
+        provider:
+          keycloak:
+            token-uri: http://localhost:8080/auth/realms/example/protocol/openid-connect/token
+            jwk-set-uri: http://localhost:8080/auth/realms/example/protocol/openid-connect/certs
+            user-name-attribute": "preferred_username"
+logging:
+  level:
+    root: info
+    org.springframework.security: DEBUG
+example:
+  server:
+    url: http://localhost:8081
+  jxbrowser: <yourLicenseHere!!>
+  keycloak:
+    issuerUrl: http://localhost:8080
+    realm: example
+    client: exampleClient
+  loginPage: http://localhost:80

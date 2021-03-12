@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: Hello OIDC
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${KEYCLOAK_ISSUER}
+          jwk-set-uri: http://keycloak:8080/auth/realms/example/protocol/openid-connect/certs
+server:
+  port: 80
+  error:
+    include-stacktrace: ALWAYS
+
+logging:
+  level:
+    root: info
+    org.springframework.security: DEBUG

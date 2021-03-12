@@ -1,0 +1,4 @@
+/demo-client/src/main/resources/application.yml
+/dbFolder
+*/.gradle
+**/build

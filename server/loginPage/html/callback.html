@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="EN-en">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>callback</title>
+</head>
+<body>
+<script src="libs/oidc-client/1.10.1/oidc-client.js"></script>
+<script>
+
+  var settings = {
+    response_mode: 'query'
+  };
+  var mgr = new Oidc.UserManager(settings);
+
+  // We need to intercept the response that comes from the OIDC provider(eg. Keycloak)
+  // keep that response, and continue with the rest of the flow
+  var aCodeAuthorizationFlowResponse;
+  mgr._settings._validator._tokenClient.originalExchangeCode = mgr._settings._validator._tokenClient.exchangeCode;
+  mgr._settings._validator._tokenClient.exchangeCode = function(args = {}) {
+		var promise = this.originalExchangeCode(args);
+		return promise.then( function(tokenResponse) {
+			aCodeAuthorizationFlowResponse = tokenResponse;
+			return tokenResponse;
+		});
+  }
+
+  // Also we keep the response from the UserInfo in case of being needed
+  var oidcProviderUserInfoResponse;
+  mgr._settings._validator._userInfoService.originalGetClaims = mgr._settings._validator._userInfoService.getClaims;
+  mgr._settings._validator._userInfoService.getClaims = function(token) {
+		var promise = this.originalGetClaims(token);
+		return promise.then( function(claims) {
+		console.log(claims)
+			oidcProviderUserInfoResponse = claims;
+			return claims;
+		});
+  }
+
+  mgr.signinCallback()
+     .then(function (user) {
+		console.log("OIDC PROVIDER RESPONSE:", aCodeAuthorizationFlowResponse)
+		console.log("OIDC PROVIDER USER INFO RESPONSE:", oidcProviderUserInfoResponse)
+        console.log("TOKENS:", user);
+
+		// The response that comes from the OIDC provider is the one truly used to the rest of the Desktop Java Workflow.
+        window.loginBridge.setTokens(JSON.stringify(aCodeAuthorizationFlowResponse), JSON.stringify(oidcProviderUserInfoResponse));
+     });
+
+</script>
+</body>
+</html>

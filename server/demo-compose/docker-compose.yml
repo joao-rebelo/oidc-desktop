@@ -1,0 +1,56 @@
+version: '3'
+
+volumes:
+  postgres_data:
+    driver: local
+    driver_opts:
+      type: "none"
+      o: "bind"
+      device: D:\javaProjects\oidc-demo\dbFolder
+
+services:
+  postgres:
+      image: postgres
+      volumes:
+        - postgres_data:/var/lib/postgresql/data
+      environment:
+        POSTGRES_DB: keycloak
+        POSTGRES_USER: keycloak
+        POSTGRES_PASSWORD: password
+#      network_mode: "host"
+      ports:
+        - "5432:5432"
+  keycloak:
+      image: jboss/keycloak:12.0.3
+      environment:
+        DB_VENDOR: POSTGRES
+        DB_ADDR: postgres
+        DB_DATABASE: keycloak
+        DB_USER: keycloak
+        DB_SCHEMA: public
+        DB_PASSWORD: password
+        KEYCLOAK_USER: admin
+        KEYCLOAK_PASSWORD: admin
+        PROXY_ADDRESS_FORWARDING: "true"
+        DEBUG: "true"
+        DEBUG_PORT: "*:8787"
+        # Uncomment the line below if you want to specify JDBC parameters. The parameter below is just an example, and it shouldn't be used in production without knowledge. It is highly recommended that you read the PostgreSQL JDBC driver documentation in order to use it.
+        #JDBC_PARAMS: "ssl=true"
+#      network_mode: "host"
+      ports:
+        - "8080:8080"
+        - "9990:9990"
+#        - "8443:8443"
+        - "8787:8787"
+      depends_on:
+        - postgres
+  demo-server:
+    image: localhost/server:latest
+    ports:
+      - 8081:80
+    environment:
+      KEYCLOAK_ISSUER: http://localhost:8080/auth/realms/example
+  login:
+    image: localhost/login:latest
+    ports:
+      - 80:80
