@@ -8,7 +8,7 @@ jib {
 		image = "nginx:1.19"
 	}
 	to {
-		image = "localhost/login"
+		image = "localhost/oidc-desktop/login"
 	}
 	extraDirectories {
 		paths {

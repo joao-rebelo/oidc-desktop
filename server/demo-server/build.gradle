@@ -20,5 +20,5 @@ group = 'com.example'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '15'
 
-jib.to.image = "localhost/server"
+jib.to.image = "localhost/oidc-desktop/server"
 jib.from.image = "adoptopenjdk:15.0.2_7-jre-hotspot"

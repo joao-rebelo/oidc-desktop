@@ -45,12 +45,12 @@ services:
       depends_on:
         - postgres
   demo-server:
-    image: localhost/server:latest
+    image: localhost/oidc-desktop/server:latest
     ports:
       - 8081:80
     environment:
       KEYCLOAK_ISSUER: http://localhost:8080/auth/realms/example
   login:
-    image: localhost/login:latest
+    image: localhost/oidc-desktop/login:latest
     ports:
       - 80:80
